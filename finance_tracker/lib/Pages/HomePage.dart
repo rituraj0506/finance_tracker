@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
-
 import 'package:finance_tracker/Pages/FormPage.dart';
+import 'package:finance_tracker/Pages/IncomePage.dart';
 import 'package:flutter/material.dart';
+import 'package:finance_tracker/piedata.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:http/http.dart' as http;
 
 class Homepage extends StatefulWidget {
@@ -24,9 +26,30 @@ class _HomepageState extends State<Homepage>
   double expense = 0.0;
 
   double totalIncome = 0.0;
+  double totalBalance = 0.0;
   double totalExpense = 0.0;
   bool isMonthSelected = false;
   bool isYearSelected = false;
+
+  List<PieChartSectionData> getSections() => PieData.data
+      .asMap()
+      .map<int, PieChartSectionData>((index, data) {
+        final value = PieChartSectionData(
+          radius: 42, // set radius according to use
+          color: data.color,
+          value: data.percent,
+          title: '${data.percent}',
+          titleStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xffffffff),
+          ),
+        );
+
+        return MapEntry(index, value);
+      })
+      .values
+      .toList();
 
   void resetSelectd() {
     isMonthSelected = false;
@@ -43,16 +66,19 @@ class _HomepageState extends State<Homepage>
 
       data.forEach((key, value) {
         if (value['selectedCategory'] == 'Income') {
-          totalIncome += double.tryParse(value['amount']) ?? 0.0;
+          // totalIncome += double.tryParse(value['amount']) ?? 0.0;
+          totalBalance += double.tryParse(value['amount']) ?? 0.0;
         } else {
           // totalExpense += double.tryParse(value['amount']) ?? 0.0;
-          totalIncome -= double.tryParse(value['amount']) ?? 0.0;
+          //totalIncome -= double.tryParse(value['amount']) ?? 0.0;
+          totalBalance -= double.tryParse(value['amount']) ?? 0.0;
         }
       });
 
       setState(() {
         income = totalIncome;
         expense = totalExpense;
+        PieData.updateData(income, expense, totalIncome);
       });
     } catch (error) {
       print('Error fetching data: $error');
@@ -132,7 +158,7 @@ class _HomepageState extends State<Homepage>
                                 ),
                                 const SizedBox(height: 30),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 83.0),
+                                  padding: const EdgeInsets.only(left: 100.0),
                                   child: Row(
                                     children: [
                                       Icon(
@@ -141,9 +167,9 @@ class _HomepageState extends State<Homepage>
                                       ),
                                       const SizedBox(width: 10),
                                       Text(
-                                        "1000000",
+                                        "₹${totalBalance.toStringAsFixed(2)}",
                                         style: TextStyle(
-                                            fontSize: 27, color: Colors.white),
+                                            color: Colors.white, fontSize: 15),
                                       ),
                                     ],
                                   ),
@@ -209,6 +235,72 @@ class _HomepageState extends State<Homepage>
                     ),
                   ),
                   const SizedBox(height: 50),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Incomepage(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Show All Transction",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 50),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: SizedBox(
+                      width: 200,
+                      height: 180,
+                      child: Stack(
+                        alignment: Alignment.center, // Center the text
+                        children: [
+                          PieChart(
+                            PieChartData(
+                              sections: getSections(),
+                              centerSpaceRadius: 42,
+                              startDegreeOffset:
+                                  90, // Rotate the chart to position the colors as needed
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                'Total',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black26,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                '230',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

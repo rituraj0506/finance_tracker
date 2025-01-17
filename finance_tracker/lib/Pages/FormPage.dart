@@ -24,7 +24,7 @@ class _FormpageState extends State<Formpage> {
   double _totalBalance = 0.0;
   double _totalIncome = 0.0;
   double _totalExpense = 0.0;
-  List<ExpenseData> expensedata = [];
+  //List<ExpenseData> expensedata = [];
 
   Future<void> onSave() async {
     if (_formKey.currentState!.validate()) {

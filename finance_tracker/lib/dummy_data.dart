@@ -1,22 +1,40 @@
-import 'package:flutter/material.dart';
-
-class ExpenseData {
-  final String amount;
-  final String description;
-  final String date;
+class FinanceData {
+  final String id;
   final String selectedCategory;
-  ExpenseData({
-    required this.amount,
-    required this.description,
-    required this.date,
-    required this.selectedCategory,
-  });
-}
+  final String amount;
+  final String date;
+  final String description;
+  final double totalBalance;
 
-final List<ExpenseData> expensedata = [
-  ExpenseData(
-      amount: '10000',
-      description: "salary",
-      date: "01/01/2025",
-      selectedCategory: "selectedCategory"),
-];
+  FinanceData({
+    required this.id,
+    required this.selectedCategory,
+    required this.amount,
+    required this.date,
+    required this.description,
+    required this.totalBalance,
+  });
+
+  // Factory method to create an instance from JSON
+  factory FinanceData.fromJson(Map<String, dynamic> json, String id) {
+    return FinanceData(
+      id: id,
+      selectedCategory: json['selectedCategory'] as String,
+      amount: json['amount'] as String,
+      date: json['date'] as String,
+      description: json['description'] as String,
+      totalBalance: (json['_totalBalance'] ?? 0.0) as double,
+    );
+  }
+
+  // Method to convert the instance back to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'selectedCategory': selectedCategory,
+      'amount': amount,
+      'date': date,
+      'description': description,
+      '_totalBalance': totalBalance,
+    };
+  }
+}
