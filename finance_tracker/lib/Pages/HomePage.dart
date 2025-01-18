@@ -25,9 +25,9 @@ class _HomepageState extends State<Homepage>
   double income = 0.0;
   double expense = 0.0;
 
-  double totalIncome = 0.0;
+  double LastIncome = 0.0;
   double totalBalance = 0.0;
-  double totalExpense = 0.0;
+  double LastExpense = 0.0;
   bool isMonthSelected = false;
   bool isYearSelected = false;
 
@@ -51,10 +51,7 @@ class _HomepageState extends State<Homepage>
       .values
       .toList();
 
-  void resetSelectd() {
-    isMonthSelected = false;
-    isYearSelected = false;
-  }
+ 
 
   Future<void> fetchData() async {
     final url = Uri.parse(
@@ -66,19 +63,18 @@ class _HomepageState extends State<Homepage>
 
       data.forEach((key, value) {
         if (value['selectedCategory'] == 'Income') {
-          // totalIncome += double.tryParse(value['amount']) ?? 0.0;
           totalBalance += double.tryParse(value['amount']) ?? 0.0;
+          LastIncome = double.tryParse(value['amount']) ?? 0.0;
         } else {
-          // totalExpense += double.tryParse(value['amount']) ?? 0.0;
-          //totalIncome -= double.tryParse(value['amount']) ?? 0.0;
+          LastExpense = double.tryParse(value['amount']) ?? 0.0;
           totalBalance -= double.tryParse(value['amount']) ?? 0.0;
         }
       });
 
       setState(() {
-        income = totalIncome;
-        expense = totalExpense;
-        PieData.updateData(income, expense, totalIncome);
+        LastIncome = LastIncome;
+        LastExpense = LastExpense;
+        PieData.updateData(LastIncome, LastExpense, totalBalance);
       });
     } catch (error) {
       print('Error fetching data: $error');
@@ -149,85 +145,77 @@ class _HomepageState extends State<Homepage>
 
                           child: Padding(
                             padding: const EdgeInsets.only(top: 1.0),
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Hello',
-                                  style: TextStyle(
-                                      fontSize: 27, color: Colors.white),
-                                ),
-                                const SizedBox(height: 30),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 100.0),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.currency_rupee_outlined,
-                                        color: Colors.white,
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        "₹${totalBalance.toStringAsFixed(2)}",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 15),
-                                      ),
-                                    ],
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Total Balance',
+                                    style: TextStyle(
+                                        fontSize: 27, color: Colors.white),
                                   ),
-                                ),
-                                SizedBox(height: 40),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "Income",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            "₹${income.toStringAsFixed(2)}",
-                                            style: TextStyle(
+                                  const SizedBox(height: 30),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    "₹${totalBalance.toStringAsFixed(2)}",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 25),
+                                  ),
+                               
+                                  SizedBox(height: 40),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "Income",
+                                              style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 15),
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "Expense",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
+                                                fontSize: 15,
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Text(
-                                            "10,000",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
+                                            const SizedBox(
+                                              height: 10,
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              "₹${LastIncome.toStringAsFixed(2)}",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "Expense",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              "₹${LastExpense.toStringAsFixed(2)}",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -252,7 +240,7 @@ class _HomepageState extends State<Homepage>
                       ),
                       child: Center(
                         child: Text(
-                          "Show All Transction",
+                          "Show All Transaction",
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

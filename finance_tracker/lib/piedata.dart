@@ -12,15 +12,43 @@ class Piechar extends StatefulWidget {
 class _PiecharState extends State<Piechar> {
   double income = 0.0;
   double expense = 0.0;
-
-  double totalIncome = 0.0;
-  double totalExpense = 0.0;
+  double LastIncome = 0.0;
+  double totalBalance = 0.0;
+  double LastExpense = 0.0;
 
   @override
   void initState() {
     super.initState();
     fetchData();
   }
+
+  // Future<void> fetchData() async {
+  //   final url = Uri.parse(
+  //       'https://financetracker-b215b-default-rtdb.firebaseio.com/finance-data.json');
+
+  //   try {
+  //     final response = await http.get(url);
+  //     final Map<String, dynamic> data = jsonDecode(response.body);
+
+  //     data.forEach((key, value) {
+  //       if (value['selectedCategory'] == 'Income') {
+  //         totalIncome += double.tryParse(value['amount']) ?? 0.0;
+  //       } else {
+  //         totalExpense += double.tryParse(value['amount']) ?? 0.0;
+  //       }
+  //     });
+
+  //     setState(() {
+  //       income = totalIncome;
+  //       expense = totalExpense;
+  //       // Update PieData here with fetched values
+  //       PieData.updateData(income, expense, totalIncome);
+  //     });
+  //   } catch (error) {
+  //     print('Error fetching data: $error');
+  //   }
+  // }
+
 
   Future<void> fetchData() async {
     final url = Uri.parse(
@@ -32,17 +60,18 @@ class _PiecharState extends State<Piechar> {
 
       data.forEach((key, value) {
         if (value['selectedCategory'] == 'Income') {
-          totalIncome += double.tryParse(value['amount']) ?? 0.0;
+          totalBalance += double.tryParse(value['amount']) ?? 0.0;
+          LastIncome = double.tryParse(value['amount']) ?? 0.0;
         } else {
-          totalExpense += double.tryParse(value['amount']) ?? 0.0;
+          LastExpense = double.tryParse(value['amount']) ?? 0.0;
+          totalBalance -= double.tryParse(value['amount']) ?? 0.0;
         }
       });
 
       setState(() {
-        income = totalIncome;
-        expense = totalExpense;
-        // Update PieData here with fetched values
-        PieData.updateData(income, expense, totalIncome);
+        LastIncome = LastIncome;
+        LastExpense = LastExpense;
+        PieData.updateData(LastIncome, LastExpense, totalBalance);
       });
     } catch (error) {
       print('Error fetching data: $error');
@@ -62,13 +91,13 @@ class PieData {
     data = [
       Data(name: 'Blue', percent: income, color: const Color(0xFF007DBB)),
       Data(
-          name: 'Light Pink', percent: expense, color: const Color(0xFFFFA8A7)),
+          name: 'Light Pink', percent: expense, color: const Color(0xFFFFA8A)),
       Data(
           name: 'Orange', percent: totalIncome, color: const Color(0xFFFF914D)),
-      Data(
-          name: 'Violet',
-          percent: 24.0,
-          color: const Color(0xFF9C90FF)), // Example fixed data
+      // Data(
+      //     name: 'Violet',
+      //     percent: 24.0,
+      //     color: const Color(0xFF9C90FF),), // Example fixed data
     ];
   }
 }
