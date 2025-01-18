@@ -77,12 +77,15 @@ class _FormpageState extends State<Formpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+       
+        title: Text(' Add Transaction', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.blueAccent,
+        centerTitle: true,
       ),
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 177, 173, 223),
+            color: Colors.white,
           ),
           child: Column(
             children: [

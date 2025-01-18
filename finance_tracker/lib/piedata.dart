@@ -22,34 +22,6 @@ class _PiecharState extends State<Piechar> {
     fetchData();
   }
 
-  // Future<void> fetchData() async {
-  //   final url = Uri.parse(
-  //       'https://financetracker-b215b-default-rtdb.firebaseio.com/finance-data.json');
-
-  //   try {
-  //     final response = await http.get(url);
-  //     final Map<String, dynamic> data = jsonDecode(response.body);
-
-  //     data.forEach((key, value) {
-  //       if (value['selectedCategory'] == 'Income') {
-  //         totalIncome += double.tryParse(value['amount']) ?? 0.0;
-  //       } else {
-  //         totalExpense += double.tryParse(value['amount']) ?? 0.0;
-  //       }
-  //     });
-
-  //     setState(() {
-  //       income = totalIncome;
-  //       expense = totalExpense;
-  //       // Update PieData here with fetched values
-  //       PieData.updateData(income, expense, totalIncome);
-  //     });
-  //   } catch (error) {
-  //     print('Error fetching data: $error');
-  //   }
-  // }
-
-
   Future<void> fetchData() async {
     final url = Uri.parse(
         'https://financetracker-b215b-default-rtdb.firebaseio.com/finance-data.json');
@@ -91,7 +63,10 @@ class PieData {
     data = [
       Data(name: 'Blue', percent: income, color: const Color(0xFF007DBB)),
       Data(
-          name: 'Light Pink', percent: expense, color: const Color(0xFFFFA8A)),
+        name: 'Light Pink',
+        percent: expense,
+        color: const Color(0xFF9C90FF),
+      ),
       Data(
           name: 'Orange', percent: totalIncome, color: const Color(0xFFFF914D)),
       // Data(
