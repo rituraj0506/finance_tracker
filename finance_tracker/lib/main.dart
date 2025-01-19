@@ -1,4 +1,5 @@
 import 'package:finance_tracker/Pages/HomePage.dart';
+import 'package:finance_tracker/SplashScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Homepage(),
+      home: SplashScreen(),
     );
   }
 }
