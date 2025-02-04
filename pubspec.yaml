@@ -1,0 +1,40 @@
+name: finance_tracker
+description: "A new Flutter project."
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.0-216.1.beta
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  http: ^1.2.2
+  provider: ^6.1.2
+  fl_chart: ^0.69.0
+  pie_chart: ^5.4.0
+  intl: ^0.18.0
+  firebase_core: ^3.10.1
+  firebase_auth: ^5.4.1
+  cloud_firestore: ^5.6.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  # flutter_native_splash: ^2.4.4
+
+# flutter_native_splash:
+#   image: asset/splash_screen.jpg  # Your splash screen image
+#   # Optional: background color if the image doesn't cover the whole screen
+#   android: true
+#   ios: true
+#   fullscreen: true  # Ensures the splash screen is full-screen
+#   web: false  # Optional: Disable on web if you don't need it there
+
+flutter:
+  uses-material-design: true
+  assets:
+    - asset/ # Corrected the assets path to 'assets' instead of 'asset'
