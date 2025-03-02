@@ -82,17 +82,17 @@ class _HomepageState extends State<Homepage> {
 
         if (data['selectedCategory'] == 'Income') {
           tempTotalBalance += amount;
-          tempLastIncome += amount; // Sum up all income transactions
+          tempLastIncome += amount; 
         } else {
           tempTotalBalance -= amount;
-          tempLastExpense += amount; // Sum up all expense transactions
+          tempLastExpense += amount; 
         }
       }
 
       setState(() {
         totalBalance = tempTotalBalance;
-        LastIncome = tempLastIncome; // Update correctly
-        LastExpense = tempLastExpense; // Update correctly
+        LastIncome = tempLastIncome;
+        LastExpense = tempLastExpense; 
         PieData.updateData(LastIncome, LastExpense, totalBalance);
       });
 
@@ -279,10 +279,10 @@ class _HomepageState extends State<Homepage> {
                               ),
                               child: Row(
                                 children: [
-                                  // Pie chart section
+                                  
                                   Flexible(
                                     flex:
-                                        2, // Adjusts the pie chart to take 3/4th of the row space
+                                        2, 
                                     child: Stack(
                                       alignment: Alignment.center,
                                       children: [
