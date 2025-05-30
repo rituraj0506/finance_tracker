@@ -118,393 +118,275 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.blue[800],
         body: Column(
           children: [
+            // Top bar
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    " Welcome!",
+                  const Text(
+                    "Welcome!",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w800,
+                      color: Colors.white,
                     ),
                   ),
                   IconButton(
-                      onPressed: () {
-                        FirebaseAuth.instance.signOut();
-                      },
-                      icon: Icon(Icons.logout_sharp)),
+                    onPressed: () {
+                      FirebaseAuth.instance.signOut();
+                    },
+                    icon: const Icon(Icons.logout_sharp, color: Colors.white),
+                  ),
                 ],
               ),
             ),
+
+            // Body content
             Expanded(
               child: SingleChildScrollView(
-                child: Row(
-                  children: [
-                    Container(
-                      width: screenWidth,
-                      height: screenHeight,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  width: screenWidth * 0.8,
-                                  height: screenHeight * 0.35,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Colors.blue[900]!,
-                                        Colors.blue[600]!
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 1.0),
-                                    child: Center(
-                                      child: Column(
+                child: Center(
+                  child: Container(
+                    width: screenWidth,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(2)),
+                    ),
+                    child: Column(
+                      children: [
+                        // Total Balance Card
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Container(
+                            width: screenWidth * 0.9,
+                            height: screenHeight * 0.35,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Colors.blue[900]!, Colors.blue[600]!],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Total Balance',
+                                  style: TextStyle(fontSize: 27, color: Colors.white),
+                                ),
+                                const SizedBox(height: 30),
+                                Text(
+                                  "₹${totalBalance.toStringAsFixed(2)}",
+                                  style: const TextStyle(color: Colors.white, fontSize: 25),
+                                ),
+                                const SizedBox(height: 40),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
                                         children: [
-                                          Text(
-                                            'Total Balance',
-                                            style: TextStyle(
-                                                fontSize: 27,
-                                                color: Colors.white),
+                                          const Text(
+                                            "Income",
+                                            style: TextStyle(color: Colors.white, fontSize: 15),
                                           ),
-                                          const SizedBox(height: 30),
-                                          const SizedBox(width: 10),
+                                          const SizedBox(height: 10),
                                           Text(
-                                            "₹${totalBalance.toStringAsFixed(2)}",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 25),
-                                          ),
-                                          SizedBox(height: 40),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      "Income",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: 10),
-                                                    Text(
-                                                      "₹${LastIncome.toStringAsFixed(2)}",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 15),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      "Expense",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text(
-                                                      "₹${LastExpense.toStringAsFixed(2)}",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
+                                            "₹${LastIncome.toStringAsFixed(2)}",
+                                            style: const TextStyle(color: Colors.white, fontSize: 15),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              width: screenWidth * 0.95,
-                              height: screenHeight * 0.35,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                gradient: LinearGradient(
-                                  colors: [Colors.white, Colors.grey.shade200],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.3),
-                                    blurRadius: 8,
-                                    spreadRadius: 2,
-                                    offset: Offset(4, 4), // Soft shadow
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                children: [
-                                  
-                                  Flexible(
-                                    flex:
-                                        2, 
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        PieChart(
-                                          PieChartData(
-                                            sections: getSections(),
-                                            centerSpaceRadius: 80,
-                                            startDegreeOffset: 270,
-                                            sectionsSpace: 3,
-                                            borderData:
-                                                FlBorderData(show: false),
+                                      Column(
+                                        children: [
+                                          const Text(
+                                            "Expense",
+                                            style: TextStyle(color: Colors.white, fontSize: 15),
                                           ),
-                                          swapAnimationDuration:
-                                              Duration(milliseconds: 800),
-                                          swapAnimationCurve:
-                                              Curves.easeOutExpo,
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Total Balance',
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black54),
-                                            ),
-                                            const SizedBox(height: 8),
-                                            Text(
-                                              "₹${totalBalance.toStringAsFixed(2)}",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-
-                                  // Right side color indication column
-                                  // Padding(
-                                  //   padding: const EdgeInsets.only(top: 90.0),
-                                  //   child: Flexible(
-                                  //     flex:
-                                  //         1, // Adjusts the color indicators to take 1/4th of the row space
-                                  //     child: Column(
-                                  //       crossAxisAlignment:
-                                  //           CrossAxisAlignment.start,
-                                  //       children: PieData.data.map((data) {
-                                  //         return Row(
-                                  //           children: [
-                                  //             Container(
-                                  //               width: 20,
-                                  //               height: 20,
-                                  //               color: data.color,
-                                  //             ),
-                                  //             const SizedBox(width: 10),
-                                  //             Text(
-                                  //               '${data.name}',
-                                  //               style: TextStyle(
-                                  //                   fontSize: 16,
-                                  //                   color: Colors.black),
-                                  //             ),
-                                  //           ],
-                                  //         );
-                                  //       }).toList(),
-                                  //     ),
-                                  //   ),
-                                  // ),
-
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            PieChart(
-                                              PieChartData(
-                                                sections: getSections(),
-                                                centerSpaceRadius: 80,
-                                                startDegreeOffset: 270,
-                                                sectionsSpace: 3,
-                                                borderData:
-                                                    FlBorderData(show: false),
-                                              ),
-                                              swapAnimationDuration:
-                                                  Duration(milliseconds: 800),
-                                              swapAnimationCurve:
-                                                  Curves.easeOutExpo,
-                                            ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'Total Balance',
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.black54),
-                                                ),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  "₹${totalBalance.toStringAsFixed(2)}",
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        // Instead of Padding -> Flexible
-                                        flex: 1,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: PieData.data.map((data) {
-                                            return Row(
-                                              children: [
-                                                Container(
-                                                  width: 20,
-                                                  height: 20,
-                                                  color: data.color,
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Text(
-                                                  '${data.name}',
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.black),
-                                                ),
-                                              ],
-                                            );
-                                          }).toList(),
-                                        ),
+                                          const SizedBox(height: 10),
+                                          Text(
+                                            "₹${LastExpense.toStringAsFixed(2)}",
+                                            style: const TextStyle(color: Colors.white, fontSize: 15),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
+                        ),
+
+                        const SizedBox(height: 40),
+
+                        // Pie chart and indicators
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: screenWidth * 0.95,
+                            height: screenHeight * 0.35,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              gradient: LinearGradient(
+                                colors: [Colors.white, Colors.grey.shade200],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  blurRadius: 8,
+                                  spreadRadius: 2,
+                                  offset: const Offset(4, 4),
+                                ),
+                              ],
+                            ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              Incomepage()), // Navigate to Incomepage
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 200,
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Colors.blue.shade600,
-                                          Colors.blue.shade900
-                                        ], // Smooth gradient
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
+                                // Pie chart
+                                Expanded(
+                                  flex: 2,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      PieChart(
+                                        PieChartData(
+                                          sections: getSections(),
+                                          centerSpaceRadius: 80,
+                                          startDegreeOffset: 270,
+                                          sectionsSpace: 3,
+                                          borderData: FlBorderData(show: false),
+                                        ),
+                                        swapAnimationDuration: const Duration(milliseconds: 800),
+                                        swapAnimationCurve: Curves.easeOutExpo,
                                       ),
-                                      borderRadius: BorderRadius.circular(
-                                          12), // Rounded corners
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black26,
-                                          blurRadius: 6,
-                                          offset: Offset(2, 3),
-                                        ),
-                                      ],
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            'Total Balance',
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black54),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            "₹${totalBalance.toStringAsFixed(2)}",
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                // Color indicators
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: PieData.data.map((data) {
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 20,
+                                                height: 20,
+                                                color: data.color,
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                data.name,
+                                                style: const TextStyle(fontSize: 16, color: Colors.black),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }).toList(),
                                     ),
-                                    child: Center(
-                                      child: Text(
-                                        "Show All Transactions",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        // Bottom buttons
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => Incomepage()),
+                                  );
+                                },
+                                child: Container(
+                                  width: 200,
+                                  height: 45,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [Colors.blue.shade600, Colors.blue.shade900],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      const BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 6,
+                                        offset: Offset(2, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      "Show All Transactions",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ),
                                 ),
-                                FloatingActionButton(
-                                  backgroundColor: Colors.blue.shade800,
-                                  foregroundColor: Colors.black,
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Formpage()),
-                                    );
-                                  },
-                                  child: Icon(Icons.add),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                              ),
+                              FloatingActionButton(
+                                backgroundColor: Colors.blue.shade800,
+                                foregroundColor: Colors.white,
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => Formpage()),
+                                  );
+                                },
+                                child: const Icon(Icons.add),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -513,4 +395,5 @@ class _HomepageState extends State<Homepage> {
       ),
     );
   }
+
 }

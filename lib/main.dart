@@ -19,32 +19,6 @@ void main() async {
 
 
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: StreamBuilder<User?>(
-//         stream: FirebaseAuth.instance.authStateChanges(),
-//         builder: (context, snapshot) {
-//           if (snapshot.connectionState == ConnectionState.waiting) {
-//             return SplashScreen();
-//           }
-//           if (snapshot.hasData) {
-//             // User is logged in, show the homepage
-//             return Homepage();
-//           }
-//           // User is not logged in, show the auth screen
-//           return const AuthScreen();
-//         },
-//       ),
-//     );
-//   }
-// }
-
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -54,17 +28,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
-        // builder: (context, snapshot) {
-        //   if (snapshot.connectionState == ConnectionState.waiting) {
-        //     return const Center(child: CircularProgressIndicator());
-        //   }
-        //   if (snapshot.hasData) {
-        //     // User is logged in, show the homepage
-        //     return Homepage();
-        //   }
-        //   // User is not logged in, show the auth screen
-        //   return const AuthScreen();
-        // },
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
