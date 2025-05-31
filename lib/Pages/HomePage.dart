@@ -4,11 +4,13 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_tracker/Pages/FormPage.dart';
 import 'package:finance_tracker/Pages/IncomePage.dart';
+import 'package:finance_tracker/Poriverdata.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/piedata.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -23,6 +25,8 @@ class _HomepageState extends State<Homepage> {
   double LastExpense = 0.0;
   bool isMonthSelected = false;
   bool isYearSelected = false;
+
+
 
   List<PieChartSectionData> getSections() {
     double total = LastIncome + LastExpense + totalBalance;
@@ -56,57 +60,12 @@ class _HomepageState extends State<Homepage> {
     ];
   }
 
-  Future<void> fetchData() async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        print("No user logged in.");
-        return;
-      }
-
-      final transactionsSnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('transactions')
-          .get();
-
-      double tempTotalBalance = 0.0;
-      double tempLastIncome = 0.0; // Accumulate income
-      double tempLastExpense = 0.0; // Accumulate expenses
-
-      for (var doc in transactionsSnapshot.docs) {
-        var data = doc.data();
-        double amount = (data['amount'] is String)
-            ? double.tryParse(data['amount']) ?? 0.0
-            : (data['amount'] ?? 0.0);
-
-        if (data['selectedCategory'] == 'Income') {
-          tempTotalBalance += amount;
-          tempLastIncome += amount; 
-        } else {
-          tempTotalBalance -= amount;
-          tempLastExpense += amount; 
-        }
-      }
-
-      setState(() {
-        totalBalance = tempTotalBalance;
-        LastIncome = tempLastIncome;
-        LastExpense = tempLastExpense; 
-        PieData.updateData(LastIncome, LastExpense, totalBalance);
-      });
-
-      print(
-          'Updated LastIncome: $LastIncome, LastExpense: $LastExpense, TotalBalance: $totalBalance');
-    } catch (error) {
-      print('Error fetching data: $error');
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    // fetchData();
+    Provider.of<DataProvider>(context,listen: false).fetchData();
   }
 
   @override
@@ -118,6 +77,9 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    final dataProvider = Provider.of<DataProvider>(context);
+
 
     return SafeArea(
       child: Scaffold(
@@ -183,7 +145,7 @@ class _HomepageState extends State<Homepage> {
                                 ),
                                 const SizedBox(height: 30),
                                 Text(
-                                  "₹${totalBalance.toStringAsFixed(2)}",
+                                  "₹${dataProvider.totalBalance.toStringAsFixed(2)}",
                                   style: const TextStyle(color: Colors.white, fontSize: 25),
                                 ),
                                 const SizedBox(height: 40),
@@ -200,7 +162,7 @@ class _HomepageState extends State<Homepage> {
                                           ),
                                           const SizedBox(height: 10),
                                           Text(
-                                            "₹${LastIncome.toStringAsFixed(2)}",
+                                            "₹${dataProvider.LastIncome.toStringAsFixed(2)}",
                                             style: const TextStyle(color: Colors.white, fontSize: 15),
                                           ),
                                         ],
@@ -213,7 +175,7 @@ class _HomepageState extends State<Homepage> {
                                           ),
                                           const SizedBox(height: 10),
                                           Text(
-                                            "₹${LastExpense.toStringAsFixed(2)}",
+                                            "₹${dataProvider.LastExpense.toStringAsFixed(2)}",
                                             style: const TextStyle(color: Colors.white, fontSize: 15),
                                           ),
                                         ],
@@ -281,7 +243,7 @@ class _HomepageState extends State<Homepage> {
                                           ),
                                           const SizedBox(height: 8),
                                           Text(
-                                            "₹${totalBalance.toStringAsFixed(2)}",
+                                            "₹${dataProvider.totalBalance.toStringAsFixed(2)}",
                                             style: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 20,
@@ -312,7 +274,7 @@ class _HomepageState extends State<Homepage> {
                                               ),
                                               const SizedBox(width: 10),
                                               Text(
-                                                data.name,
+                                               data.name,
                                                 style: const TextStyle(fontSize: 16, color: Colors.black),
                                               ),
                                             ],

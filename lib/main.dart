@@ -1,9 +1,11 @@
 import 'package:finance_tracker/Pages/HomePage.dart';
 import 'package:finance_tracker/Pages/auth.dart';
+import 'package:finance_tracker/Poriverdata.dart';
 import 'package:finance_tracker/SplashScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 
@@ -14,7 +16,15 @@ void main() async {
     options: DefaultFirebaseOptions
         .currentPlatform, // Replace with your Firebase configuration
   );
-  runApp(MyApp());
+
+  runApp(
+    MultiProvider(
+        providers: [
+       ChangeNotifierProvider(create: (_) => DataProvider()),
+        ],
+      child:  MyApp(),
+    )
+  );
 }
 
 
